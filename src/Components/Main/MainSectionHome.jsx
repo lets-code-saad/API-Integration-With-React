@@ -18,7 +18,7 @@ const apiCalling = async ()=>{
 // First object in this api is blank and it is ruining the design, that's why i'm filtering the 
 // products based on a condition.
 
-const filteredProducts = products?.data.filter((item)=> item?.id !==1 && (item?.id < 54 || item?.id > 63) )
+const filteredProducts = products?.data.filter((item)=> item?.id !==1 && (item?.id < 52 ))
 
   setProduct(filteredProducts)
 }
