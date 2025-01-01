@@ -28,8 +28,8 @@ const MainSectionHome = () => {
             {product?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)?.map((items) => {
 
               return (
-                <Grid2 className="d-flex" size={{ xs: 6, sm: 6, md: 3, lg: 3 }}>
-                  <Card className='d-flex p-3 flex-column justify-content-center'>
+                <Grid2 key={items.id} className="d-flex" size={{ xs: 6, sm: 6, md: 3, lg: 3 }}>
+                  <Card key={items.id} className='d-flex p-3 flex-column justify-content-center'>
                     <div className='text-center'>
                       <img style={{ width: "230px", height: "240px" }} src={items?.image !== "" ? items.image : "https://www.realsimple.com/thmb/T8Ep_MPA7CDhtGJ-C2V32yDvD3A=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/reuse-old-clothes-gettyimage-1316931901-e574c71950ed47c7a9bcce3d1c7911a0.jpg"} alt="" />
                     </div>
@@ -37,11 +37,11 @@ const MainSectionHome = () => {
                       <span className='text-secondary mt-1'>{items.category.name}</span>
                     </div>
                     <div>
-                      <h5 className='mt-3'>
                         <Tooltip placement='top' title={items?.title}>
+                      <h5 className='mt-3'>
                           {items?.title?.length > 20 ? items?.title.slice(0, 18) + '...' : items?.title}
-                        </Tooltip>
                       </h5>
+                        </Tooltip>
                       <div>
                         <Rating
                           name="simple-controlled"

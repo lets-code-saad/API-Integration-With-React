@@ -54,7 +54,7 @@ const Header = () => {
             {/* Center: Navigation Buttons */}
             <div className="d-flex align-items-center">
               <Link to="/">
-              <Button color="inherit" sx={{ marginRight: "2", color:"white" }}>
+              <Button color="inherit" className="me-2 text-white">
                 Home
               </Button>
               </Link>
@@ -74,7 +74,7 @@ const Header = () => {
                 variant="outlined"
                 placeholder="Search..."
                 onChange={searchFunction}
-                sx={{ marginLeft: 2, backgroundColor: 'white', borderRadius: 1 }}
+                className="ms-2 rounded-2 bg-white"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
