@@ -1,105 +1,94 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import React, { useState, useMemo } from 'react';
+import { AppBar, Toolbar, Typography, Button, TextField, InputAdornment, Grid2, Card } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import getProductsData from '../Hooks/getProductsData';
+import SkeletonForLoading from '../Main/SkeletonForLoading';
+import { Box, IconButton, Pagination, Rating, Tooltip } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const Header = () => {
+  // IMPORTING PRODUCT DATA FROM GetProductsData Hook
+  const { product, loading } = getProductsData();
 
-function Header(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  // CREATING A STATE FOR STORING THE VALUE OF SEARCH INPUT
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
+  // SETTING THE VALUE OF PAGE TO DISPLAY CARDS ON MULTIPLE PAGES
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // CREATING LOGIC TO DISPLAY SPECIFIC ITEMS PER PAGE
+  const itemsPerPage = 12;
+
+  // Memoizing filtered products to avoid unnecessary recalculations
+  const filteredProducts = useMemo(() => {
+    if (searchQuery === "") {
+      return product; // If no search query, return all products
+    }
+    return product?.filter((items) =>
+      items?.title.toLowerCase().includes(searchQuery.toLowerCase()) // Filter based on title match
+    );
+  }, [searchQuery, product]);
+
+  // PAGINATION RELATED CALCULATIONS
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  // STORING THE VALUE OF SEARCH IN SEARCH BAR
+  const searchFunction = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1); // Reset page to 1 when search query changes
   };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Cloth Store
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar color='success' component="nav">
+    <>
+      <AppBar color="warning" position="fixed">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-          color='inherit'
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-          ClothStore
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
+          {/* Container to center content */}
+          <div className="container d-flex justify-content-between align-items-center">
+            {/* Left side: Title */}
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              My Application
+            </Typography>
+
+            {/* Center: Navigation Buttons */}
+            <div className="d-flex align-items-center">
+              <Link to="/">
+              <Button color="inherit" sx={{ marginRight: "2", color:"white" }}>
+                Home
               </Button>
-            ))}
-            <IconButton color="inherit" sx={{ mr: 1 }}>
-                <AddShoppingCartIcon />
-              </IconButton>
-          </Box>
+              </Link>
+              <Button color="inherit" sx={{ marginRight: 2 }}>
+                About
+              </Button>
+              <Button color="inherit">
+                Contact
+              </Button>
+            </div>
+
+            {/* Right side: Search Bar */}
+            <div className="d-flex align-items-center">
+              <TextField
+                color="warning"
+                size="small"
+                variant="outlined"
+                placeholder="Search..."
+                onChange={searchFunction}
+                sx={{ marginLeft: 2, backgroundColor: 'white', borderRadius: 1 }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box>
+    </>
   );
-}
+};
 
 export default Header;
