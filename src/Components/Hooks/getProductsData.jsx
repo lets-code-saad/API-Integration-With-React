@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+import axiosInterceptors from "../../utils/axiosInterceptor"
 
 const getProductsData = () => {
   //State
@@ -15,6 +16,17 @@ const getProductsData = () => {
       setLoading(false)
     }
     apiCalling()
+
+// Dummy Call
+const dummyCall = async ()=>{
+
+  const dummyAuth = await axiosInterceptors.get("/auth/login")
+
+  console.log(dummyAuth, "dummyAuth");
+  
+}
+dummyCall()
+
   }
     , [])
 

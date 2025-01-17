@@ -53,7 +53,7 @@ const Header = () => {
 
             {/* Center: Navigation Buttons */}
             <div className="d-flex align-items-center">
-              <Link to="/">
+              <Link to="/main">
               <Button color="inherit" className="me-2 text-white">
                 Home
               </Button>
@@ -64,6 +64,11 @@ const Header = () => {
               <Button color="inherit">
                 Contact
               </Button>
+              <Link to="/">
+              <Button color="inherit" className="me-2 text-white">
+                Login
+              </Button>
+              </Link>
             </div>
 
             {/* Right side: Search Bar */}
